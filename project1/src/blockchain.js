@@ -203,7 +203,14 @@ class Blockchain {
         let errorLog = [];
         return new Promise(async (resolve) => {
             self.chain.forEach(async (block) => {
-                await block.validate().catch((error) => errorLog.push(error.message));
+                let isBlockValid = await block.validate()
+                let prevBlockHeight = block.height -1
+                if(!isBlockValid) {
+                    errorLog.push(`Block ${block.height} is not valid.`)
+                }
+                if(block.height > 0 && (block.previousBlockHash != this.chain[prevBlockHeight].hash)) {
+                    errorLog.push(`Block ${block.height} does not link to Block ${prevBlockHeight}.`)
+                }
             });
 
             resolve(errorLog);
