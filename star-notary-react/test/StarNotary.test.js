@@ -1,4 +1,4 @@
-const StartNotary = artifacts.require("StarNotary");
+const StarNotary = artifacts.require("StarNotary");
 
 var accounts; // List of development accounts provided by Truffle
 var owner; // Global variable use it in the tests cases
@@ -14,7 +14,7 @@ contract("StarNotary", (accs) => {
 it("has correct name", async () => {
   let instance = await StarNotary.deployed(); // Making sure the Smart Contract is deployed and getting the instance.
   let starName = await instance.starName.call(); // Calling the starName property
-  assert.equal(starName, "Awesome Udacity Star"); // Assert if the starName property was initialized correctly
+  assert.equal(starName, "Awesome Star"); // Assert if the starName property was initialized correctly
 });
 
 // Example test case, it will test is the Smart Contract function claimStar assigned the Star to the owner address
