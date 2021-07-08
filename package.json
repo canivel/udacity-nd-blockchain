@@ -12,7 +12,9 @@
   "license": "ISC",
   "dependencies": {
     "babel-core": "^6.26.3",
-    "crypto-js": "^4.0.0"
+    "crypto-js": "^4.0.0",
+    "openzeppelin-solidity": "^4.2.0",
+    "truffle-hdwallet-provider": "^1.0.17"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.5",
