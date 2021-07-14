@@ -11,8 +11,22 @@ class App extends Component {
       contract: null,
       starOwner: null,
       starName: "",
+      starId: "",
       status: "",
     };
+
+    // this.handleChangestarName = this.handleChangestarName.bind(this);
+    // this.handleChangestarId = this.handleChangestarId.bind(this);
+    // this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+
+  handleChangestarName = (event) => {
+    this.setState({starName: event.target.value});
+  }
+
+  handleChangestarId = (event) => {
+    this.setState({starId: event.target.value});
   }
 
   async componentDidMount() {
@@ -32,40 +46,19 @@ class App extends Component {
   }
 
   // function called to show the starName
-  starNameFunc = () => {
+  createStar = async(event) => {
+    event.preventDefault();
+    await this.state.contract.methods
+      .createStar(this.state.starName, this.state.starId).send({from: this.state.accounts[0]});
+
+    alert('Star minted: ' + this.state.starName);
+
     // calling the starName property from your Smart Contract.
-    this.state.contract.methods
-      .starName()
-      .call()
-      .then((starName) => {
-        this.setState({ starName });
-      });
-  };
+    // await this.state.contract.createStar(this.state.starName, this.state.starId, {from: this.state.accounts[0]});
+    // this.setState({status: "New Star Owner is " + this.state.accounts[0] });
+  }
 
-  // function called to show the starOwner
-  starOwnerFunc = () => {
-    this.state.contract.methods
-      .starOwner()
-      .call()
-      .then((starOwner) => {
-        this.setState({ starOwner });
-      }); // calling the starOwner property from your Smart Contract.
-  };
-
-  // function called to claim a Star
-  claimStarFunc = () => {
-    this.state.contract.methods
-      .claimStar()
-      .send({ from: this.state.accounts[0] }); // Use `send` instead of `call` when you called a function in your Smart Contract
-    this.starOwnerFunc();
-    this.state.contract.methods
-      .starOwner()
-      .call()
-      .then((status) => {
-        console.log(status);
-        this.setState({ status });
-      });
-  };
+  
 
   render() {
     return (
@@ -73,10 +66,13 @@ class App extends Component {
         <h1>StarNotary DAPP</h1>
         <br />
         <h1>Create a Star</h1>
-        <br />Star Name: <input type="text" id="starName" />
-        <br />Star ID:<input type="text" id="starId" />
-        <br /><button id="createStar" onClick={this.createStar}>Create Star</button>
-        
+        <form  onSubmit={this.createStar}>
+        <br />Star Name: <input type="text" id="starName"  value={this.state.starName} onChange={this.handleChangestarName} />
+        Star Name will be, {this.state.starName}
+        <br />Star ID:<input type="text" id="starId" value={this.state.starId} onChange={this.handleChangestarId} />
+        <br />
+        <input type="submit" value="Create Star" />
+        </form>
         <br />
 
         <span id="status">{this.state.status}</span>
